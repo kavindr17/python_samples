@@ -25,7 +25,7 @@ import configparser
 class Player(Tk.Frame):
     """The main window has to deal with events.
     """
-    def __init__(self, parent, title=None):
+    def __init__(self, parent):
         Tk.Frame.__init__(self, parent)
         self.pack(fill=Tk.BOTH, expand=1)
 
@@ -34,6 +34,7 @@ class Player(Tk.Frame):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
+        title = self.config['DEFAULT']['title']
         if title == None:
             title = "tk_vlc"
         self.parent.title(title)
@@ -109,7 +110,11 @@ class Player(Tk.Frame):
 
 def Tk_get_root():
     if not hasattr(Tk_get_root, "root"): #(1)
-        Tk_get_root.root= Tk.Tk(className='Moriahcctv')  #initialization call is inside the function
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        classmame = config['DEFAULT']['classmame']
+        Tk_get_root.root= Tk.Tk(className=classmame)  #initialization call is inside the function
     return Tk_get_root.root
 
 def _quit():
@@ -125,7 +130,7 @@ if __name__ == "__main__":
     root = Tk_get_root()
     root.protocol("WM_DELETE_WINDOW", _quit)
 
-    player = Player(root, title="Moriah - CCTV")
+    player = Player(root)
     root.attributes('-zoomed', True)
     root.resizable(0,0)
     # root.state('zoomed')
