@@ -20,7 +20,7 @@ else:
 # import standard libraries
 import os
 import platform
-import configparser
+import configparser, logging
 
 class Player(Tk.Frame):
     """The main window has to deal with events.
@@ -37,6 +37,7 @@ class Player(Tk.Frame):
         title = self.config['DEFAULT']['title']
         if title == None:
             title = "tk_vlc"
+        logging.info("title %s", title)
         self.parent.title(title)
         self.parent.minsize(width=502, height=0)
 
@@ -113,12 +114,14 @@ def Tk_get_root():
         config = configparser.ConfigParser()
         config.read('config.ini')
 
-        classmame = config['DEFAULT']['classmame']
-        Tk_get_root.root= Tk.Tk(className=classmame)  #initialization call is inside the function
+        classname = config['DEFAULT']['classname']
+        logging.info("classname : %s", classname)
+        Tk_get_root.root= Tk.Tk(className=classname)  #initialization call is inside the function
     return Tk_get_root.root
 
 def _quit():
     print("_quit: bye")
+    logging.info("_quit: bye")
     root = Tk_get_root()
     root.quit()     # stops mainloop
     root.destroy()  # this is necessary on Windows to prevent
@@ -127,6 +130,8 @@ def _quit():
 
 if __name__ == "__main__":
     # Create a Tk.App(), which handles the windowing system event loop
+    logging.basicConfig(filename='myapp.log', level=logging.INFO, format='%(asctime)s %(message)s')
+    logging.info("starting")
     root = Tk_get_root()
     root.protocol("WM_DELETE_WINDOW", _quit)
 
