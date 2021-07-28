@@ -62,8 +62,7 @@ class Player(Tk.Frame):
         self.videopanel = [None] * 10
         self.canvas = [None] * 10
         for index in range(8):
-            if (index != 6):
-                self.createPlayer(index)
+            self.createPlayer(index)
 
         #self.internalFrame.update()
         self.parent.update()
@@ -129,6 +128,7 @@ def _quit():
     os._exit(1)
 
 if __name__ == "__main__":
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     # Create a Tk.App(), which handles the windowing system event loop
     logging.basicConfig(filename='myapp.log', level=logging.INFO, format='%(asctime)s %(message)s')
     logging.info("starting")
